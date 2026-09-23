@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Диагностика — ACADEMIA</title>
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<header>
+    <a href="../index.html" class="logo">
+        ACADEMIA<span>.</span>
+    </a>
+
+    <nav>
+        <a href="diagnostic.html">Диагностика</a>
+        <a href="methods.html">Методики</a>
+        <a href="exams.html">Экзамены</a>
+        <a href="planner.html">Планировщик</a>
+        <a href="pages/focus.html">Концентрация</a>
+        <a href="progress.html">Прогресс</a>
+    </nav>
+</header>
+
+
+<main>
+
+    <!-- INTRO -->
+
+    <section id="intro">
+
+        <div class="badge">ДИАГНОСТИКА</div>
+
+        <h1>Как ты учишься?</h1>
+
+        <p class="subtitle">
+            Это не тест на интеллект и не проверка школьных знаний.
+            Мы разберём твои привычки обучения и определим,
+            какие навыки уже работают хорошо, а какие стоит изменить.
+        </p>
+
+        <div class="card" style="max-width: 700px; margin-bottom: 30px;">
+
+            <h2>Что будет?</h2>
+
+            <p style="margin-top: 15px; line-height: 1.6;">
+                10 вопросов · примерно 3 минуты
+            </p>
+
+            <p style="margin-top: 10px; line-height: 1.6;">
+                В конце ты получишь профиль по шести
+                ключевым навыкам обучения.
+            </p>
+
+        </div>
+
+        <button onclick="startDiagnostic()">
+            Начать диагностику
+        </button>
+
+    </section>
+
+
+    <!-- QUIZ -->
+
+    <section id="quiz-section" style="display:none;">
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+
+            <span id="question-number">
+                1 / 10
+            </span>
+
+            <span id="progress-percent">
+                10%
+            </span>
+
+        </div>
+
+        <div style="
+            width:100%;
+            height:6px;
+            background:#e5e7eb;
+            border-radius:10px;
+            margin-bottom:40px;
+        ">
+
+            <div id="progress-bar" style="
+                width:10%;
+                height:100%;
+                background:#2563eb;
+                border-radius:10px;
+                transition:0.3s;
+            "></div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-number" id="question-category">
+                ПАМЯТЬ
+            </div>
+
+            <h2 id="question-text">
+                Вопрос
+            </h2>
+
+            <div id="answers"
+                style="
+                    display:flex;
+                    flex-direction:column;
+                    gap:12px;
+                    margin-top:30px;
+                ">
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RESULTS -->
+
+    <section id="results" style="display:none;">
+
+        <div class="badge">РЕЗУЛЬТАТ</div>
+
+        <h1>Твой профиль обучения</h1>
+
+        <p class="subtitle">
+            Результат показывает не «насколько ты умный».
+            Он показывает, какие стратегии обучения
+            ты используешь сейчас.
+        </p>
+
+
+        <div id="result-cards"
+            style="
+                display:grid;
+                grid-template-columns:repeat(2, 1fr);
+                gap:18px;
+                margin-top:50px;
+            ">
+        </div>
+
+
+        <div class="card" style="margin-top:30px;">
+
+            <div class="card-number">
+                ГЛАВНАЯ ЗОНА РОСТА
+            </div>
+
+            <h2 id="main-problem"></h2>
+
+            <p id="main-advice"
+               style="
+                    margin-top:15px;
+                    line-height:1.6;
+               ">
+            </p>
+
+        </div>
+
+
+        <div style="margin-top:30px;">
+
+            <button onclick="restartDiagnostic()">
+                Пройти ещё раз
+            </button>
+
+            <a href="methods.html">
+                <button class="secondary">
+                    Изучить методики
+                </button>
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+
+/* =========================
+   QUESTIONS
+========================= */
+
+const questions = [
+
+    {
+        category: "ПАМЯТЬ",
+        skill: "memory",
+
+        text: "Ты выучил новую тему. Как ты обычно проверяешь, что действительно её помнишь?",
+
+        answers: [
+
+            {
+                text: "Перечитываю тему ещё несколько раз",
+                value: 1
+            },
+
+            {
+                text: "Смотрю на конспект и понимаю, что всё знакомо",
+                value: 2
+            },
+
+            {
+                text: "Закрываю учебник и пытаюсь вспомнить главное",
+                value: 4
+            },
+
+            {
+                text: "Задаю себе вопросы и отвечаю без подсказок",
+                value: 5
+            }
+
+        ]
+    },
+
+
+    {
+        category: "ПАМЯТЬ",
+        skill: "memory",
+
+        text: "Через неделю после изучения темы ты обнаружил, что многое забыл. Что сделаешь?",
+
+        answers: [
+
+            {
+                text: "Выучу всё заново перед контрольной",
+                value: 1
+            },
+
+            {
+                text: "Перечитаю конспект",
+                value: 2
+            },
+
+            {
+                text: "Проверю себя и повторю то, что забыл",
+                value: 4
+            },
+
+            {
+                text: "Буду регулярно возвращаться к теме через интервалы",
+                value: 5
+            }
+
+        ]
+    },
+
+
+    {
+        category: "КОНЦЕНТРАЦИЯ",
+        skill: "focus",
+
+        text: "Ты сел делать домашнюю работу. Телефон лежит рядом. Что обычно происходит?",
+
+        answers: [
+
+            {
+                text: "Постоянно проверяю уведомления",
+                value: 1
+            },
+
+            {
+                text: "Иногда отвлекаюсь, но возвращаюсь",
+                value: 3
+            },
+
+            {
+                text: "Убираю телефон подальше",
+                value: 4
+            },
+
+            {
+                text: "Заранее убираю всё, что может меня отвлечь",
+                value: 5
+            }
+
+        ]
+    },
+
+
+    {
+        category: "КОНЦЕНТРАЦИЯ",
+        skill: "focus",
+
+        text: "Когда задача кажется слишком большой, что ты делаешь?",
+
+        answers: [
+
+            {
+                text: "Откладываю её",
+                value: 1
+            },
+
+            {
+                text: "Начинаю делать как получится",
+                value: 2
+            },
+
+            {
+                text: "Разбиваю её на несколько частей",
+                value: 4
+            },
+
+            {
+                text: "Формулирую конкретный результат ближайшей рабочей сессии",
+                value: 5
+            }
+
+        ]
+    },
+
+
+    {
+        category: "ПЛАНИРОВАНИЕ",
+        skill: "planning",
+
+        text: "До экзамена осталось 7 дней. Что ты делаешь?",
+
+        answers: [
+
+            {
+                text: "Начинаю учить всё подряд",
+                value: 1
+            },
+
+            {
+                text: "Выбираю самые сложные темы",
+                value: 2
+            },
+
+            {
+                text: "Составляю список тем и распределяю их по дням",
+                value: 4
+            },
+
+            {
+                text: "Сначала определяю пробелы, затем планирую изучение, практику и повторение",
+                value: 5
+            }
+
+        ]
+    },
+
+
+    {
+        category: "ПЛАНИРОВАНИЕ",
+        skill: "planning",
+
+        text: "Как обычно выглядит твой план на день?",
+
+        answers: [
+
+            {
+                text: "Я ничего заранее не планирую",
+                value: 1
+            },
+
+            {
+                text: "У меня есть список дел",
+                value: 2
+            },
+
+            {
+                text: "Я примерно знаю, когда что буду делать",
+                value: 4
+            },
+
+            {
+                text: "Я заранее определяю конкретные задачи и время на них",
+                value: 5
+            }
+
+        ]
+    },
+
+
+    {
+        category: "САМОПРОВЕРКА",
+        skill: "testing",
+
+        text: "Ты закончил читать параграф. Что лучше показывает, понял ли ты его?",
+
+        answers: [
+
+            {
+                text: "Я прочитал его внимательно",
+                value: 1
+            },
+
+            {
+                text: "Я выделил основные мысли",
+                value: 2
+            },
+
+            {
+                text: "Я могу пересказать его своими словами",
+                value: 4
+            },
+
+            {
+                text: "Я могу ответить на вопросы или решить задачи без подсказок",
+                value: 5
+            }
+
+        ]
+    },
+
+
+    {
+        category: "АНАЛИЗ ОШИБОК",
+        skill: "errors",
+
+        text: "Ты решил задачу неправильно. Что делаешь после того, как увидел правильный ответ?",
+
+        answers: [
+
+            {
+                text: "Смотрю правильный ответ и иду дальше",
+                value: 1
+            },
+
+            {
+                text: "Исправляю свою ошибку",
+                value: 2
+            },
+
+            {
+                text: "Пытаюсь понять, где именно ошибся",
+                value: 4
+            },
+
+            {
+                text: "Определяю причину ошибки и что буду делать, чтобы не повторить её",
+                value: 5
+            }
+
+        ]
+    },
+
+
+    {
+        category: "САМОСТОЯТЕЛЬНОСТЬ",
+        skill: "independence",
+
+        text: "Ты не понимаешь новую тему. Что делаешь первым?",
+
+        answers: [
+
+            {
+                text: "Жду, пока учитель объяснит",
+                value: 1
+            },
+
+            {
+                text: "Ищу первое попавшееся видео",
+                value: 2
+            },
+
+            {
+                text: "Ищу несколько источников и сравниваю объяснения",
+                value: 4
+            },
+
+            {
+                text: "Определяю, что именно не понимаю, выбираю подходящий источник и затем проверяю себя",
+                value: 5
+            }
+
+        ]
+    },
+
+
+    {
+        category: "САМОСТОЯТЕЛЬНОСТЬ",
+        skill: "independence",
+
+        text: "После контрольной ты получил результат хуже ожидаемого. Что дальше?",
+
+        answers: [
+
+            {
+                text: "Просто буду больше учиться",
+                value: 1
+            },
+
+            {
+                text: "Посмотрю свои ошибки",
+                value: 2
+            },
+
+            {
+                text: "Определю темы, в которых были проблемы",
+                value: 4
+            },
+
+            {
+                text: "Проанализирую причины, изменю стратегию и проверю себя снова",
+                value: 5
+            }
+
+        ]
+    }
+
+];
+
+
+/* =========================
+   STATE
+========================= */
+
+let currentQuestion = 0;
+
+let scores = {
+    memory: 0,
+    focus: 0,
+    planning: 0,
+    testing: 0,
+    errors: 0,
+    independence: 0
+};
+
+
+/* =========================
+   START
+========================= */
+
+function startDiagnostic() {
+
+    currentQuestion = 0;
+
+    scores = {
+        memory: 0,
+        focus: 0,
+        planning: 0,
+        testing: 0,
+        errors: 0,
+        independence: 0
+    };
+
+    document.getElementById("intro").style.display = "none";
+
+    document.getElementById("results").style.display = "none";
+
+    document.getElementById("quiz-section").style.display = "block";
+
+    showQuestion();
+}
+
+
+/* =========================
+   SHOW QUESTION
+========================= */
+
+function showQuestion() {
+
+    const question = questions[currentQuestion];
+
+    const number = currentQuestion + 1;
+
+    const percent = Math.round(
+        (number / questions.length) * 100
+    );
+
+
+    document.getElementById("question-number").textContent =
+        number + " / " + questions.length;
+
+
+    document.getElementById("progress-percent").textContent =
+        percent + "%";
+
+
+    document.getElementById("progress-bar").style.width =
+        percent + "%";
+
+
+    document.getElementById("question-category").textContent =
+        question.category;
+
+
+    document.getElementById("question-text").textContent =
+        question.text;
+
+
+    const answersContainer =
+        document.getElementById("answers");
+
+
+    answersContainer.innerHTML = "";
+
+
+    question.answers.forEach((answer, index) => {
+
+        const button = document.createElement("button");
+
+        button.className = "secondary";
+
+        button.style.textAlign = "left";
+
+        button.textContent = answer.text;
+
+        button.onclick = function() {
+
+            chooseAnswer(answer.value);
+
+        };
+
+
+        answersContainer.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================
+   ANSWER
+========================= */
+
+function chooseAnswer(value) {
+
+    const skill = questions[currentQuestion].skill;
+
+    scores[skill] += value;
+
+    currentQuestion++;
+
+
+    if (currentQuestion >= questions.length) {
+
+        finishDiagnostic();
+
+    } else {
+
+        showQuestion();
+
+    }
+
+}
+
+
+/* =========================
+   FINISH
+========================= */
+
+function finishDiagnostic() {
+
+    document.getElementById("quiz-section").style.display = "none";
+
+    document.getElementById("results").style.display = "block";
+
+
+    const resultCards =
+        document.getElementById("result-cards");
+
+
+    resultCards.innerHTML = "";
+
+
+    const names = {
+
+        memory: "Память",
+
+        focus: "Концентрация",
+
+        planning: "Планирование",
+
+        testing: "Самопроверка",
+
+        errors: "Анализ ошибок",
+
+        independence: "Самостоятельность"
+
+    };
+
+
+    const advice = {
+
+        memory:
+            "Попробуй Active Recall и интервальное повторение вместо постоянного перечитывания.",
+
+        focus:
+            "Начинай с одной конкретной задачи и убирай телефон и другие отвлекающие факторы.",
+
+        planning:
+            "Разбивай большие цели на конкретные задачи и заранее распределяй время.",
+
+        testing:
+            "Чаще закрывай учебник и проверяй, можешь ли воспроизвести материал самостоятельно.",
+
+        errors:
+            "После ошибки анализируй не только правильный ответ, но и причину своей ошибки.",
+
+        independence:
+            "Формулируй конкретный пробел в знаниях, ищи подходящий источник и проверяй результат."
+    };
+
+
+    let lowestSkill = null;
+
+    let lowestPercent = 101;
+
+
+    Object.keys(scores).forEach(skill => {
+
+        const maxScore = 10;
+
+        const percent =
+            Math.round((scores[skill] / maxScore) * 100);
+
+
+        if (percent < lowestPercent) {
+
+            lowestPercent = percent;
+
+            lowestSkill = skill;
+
+        }
+
+
+        const card = document.createElement("div");
+
+        card.className = "card";
+
+
+        card.innerHTML = `
+
+            <div class="card-number">
+                ${percent}%
+            </div>
+
+            <h2>
+                ${names[skill]}
+            </h2>
+
+            <div style="
+                width:100%;
+                height:8px;
+                background:#e5e7eb;
+                border-radius:10px;
+                margin:20px 0;
+            ">
+
+                <div style="
+                    width:${percent}%;
+                    height:100%;
+                    background:#2563eb;
+                    border-radius:10px;
+                "></div>
+
+            </div>
+
+            <p>
+                ${advice[skill]}
+            </p>
+
+        `;
+
+
+        resultCards.appendChild(card);
+
+    });
+
+
+    document.getElementById("main-problem").textContent =
+        names[lowestSkill];
+
+
+    document.getElementById("main-advice").textContent =
+        advice[lowestSkill];
+
+
+    localStorage.setItem(
+        "academiaDiagnostic",
+        JSON.stringify(scores)
+    );
+
+}
+
+
+/* =========================
+   RESTART
+========================= */
+
+function restartDiagnostic() {
+
+    document.getElementById("results").style.display = "none";
+
+    document.getElementById("intro").style.display = "block";
+
+}
+
+</script>
+
+</body>
+</html>

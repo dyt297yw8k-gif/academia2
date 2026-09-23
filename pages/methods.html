@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Методики — ACADEMIA</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        .page-intro {
+            max-width: 760px;
+            margin-bottom: 45px;
+        }
+
+        .page-intro h1 {
+            font-size: clamp(42px, 6vw, 70px);
+            letter-spacing: -4px;
+            margin-bottom: 20px;
+        }
+
+        .page-intro p {
+            color: #6b7280;
+            font-size: 19px;
+            line-height: 1.6;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 35px;
+        }
+
+        .filter {
+            background: white;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            padding: 10px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .filter.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .method-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            min-height: 260px;
+            transition: 0.2s;
+        }
+
+        .method-card:hover {
+            transform: translateY(-3px);
+            border-color: #bfdbfe;
+        }
+
+        .method-category {
+            color: #2563eb;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .method-card h2 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .method-card p {
+            color: #6b7280;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .method-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 9px;
+        }
+
+        .method-actions button {
+            padding: 11px 15px;
+            font-size: 14px;
+        }
+
+        .details {
+            display: none;
+            margin-top: 40px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 22px;
+            padding: 35px;
+        }
+
+        .details.visible {
+            display: block;
+        }
+
+        .details-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .details h2 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .close-btn {
+            background: #f3f4f6;
+            color: #111827;
+            padding: 10px 14px;
+            height: fit-content;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .detail-block {
+            padding: 22px;
+            background: #f8fafc;
+            border-radius: 15px;
+        }
+
+        .detail-block h3 {
+            margin-bottom: 10px;
+            font-size: 17px;
+        }
+
+        .detail-block p,
+        .detail-block li {
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        .detail-block ul {
+            padding-left: 20px;
+        }
+
+        .pomodoro {
+            margin-top: 40px;
+            padding: 30px;
+            border-radius: 20px;
+            background: #111827;
+            color: white;
+            text-align: center;
+        }
+
+        .pomodoro h2 {
+            margin-bottom: 8px;
+        }
+
+        .timer {
+            font-size: 76px;
+            font-weight: 800;
+            letter-spacing: -4px;
+            margin: 20px 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer-mode {
+            color: #9ca3af;
+            margin-bottom: 20px;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .timer-controls button {
+            background: white;
+            color: #111827;
+        }
+
+        .timer-controls button.secondary {
+            background: #374151;
+            color: white;
+            border: none;
+        }
+
+        .mode-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .mode-buttons button {
+            padding: 9px 13px;
+            font-size: 13px;
+            background: #374151;
+            color: white;
+        }
+
+        @media (max-width: 900px) {
+            .methods-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .methods-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .details {
+                padding: 22px;
+            }
+
+            .details-top {
+                flex-direction: column;
+            }
+
+            .timer {
+                font-size: 58px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="../index.html" class="logo">
+        ACADEMIA<span>.</span>
+    </a>
+
+    <nav>
+        <a href="diagnostic.html">Диагностика</a>
+        <a href="methods.html">Методики</a>
+        <a href="exams.html">Экзамены</a>
+        <a href="planner.html">Планировщик</a>
+        <a href="pages/focus.html">Концентрация</a>
+        <a href="progress.html">Прогресс</a>
+    </nav>
+</header>
+
+<main>
+
+    <section class="page-intro">
+        <div class="badge">LEARNING METHODS</div>
+
+        <h1>Методики</h1>
+
+        <p>
+            Не существует одной волшебной техники обучения.
+            Здесь собраны конкретные методы для памяти,
+            концентрации, понимания, планирования и подготовки
+            к экзаменам.
+        </p>
+    </section>
+
+
+    <div class="filters">
+        <button class="filter active" onclick="filterMethods('all', this)">
+            Все
+        </button>
+
+        <button class="filter" onclick="filterMethods('memory', this)">
+            Память
+        </button>
+
+        <button class="filter" onclick="filterMethods('focus', this)">
+            Концентрация
+        </button>
+
+        <button class="filter" onclick="filterMethods('planning', this)">
+            Планирование
+        </button>
+
+        <button class="filter" onclick="filterMethods('exam', this)">
+            Экзамены
+        </button>
+    </div>
+
+
+    <section class="methods-grid">
+
+        <article class="method-card" data-category="memory">
+            <div class="method-category">Память</div>
+            <h2>Active Recall</h2>
+            <p>
+                Вспоминание информации без подсказки
+                вместо повторного перечитывания.
+            </p>
+
+            <div class="method-actions">
+                <button onclick="showMethod('recall')">
+                    Подробнее
+                </button>
+                <button class="secondary" onclick="alert('Мини-практика Active Recall появится здесь')">
+                    Попробовать
+                </button>
+            </div>
+        </article>
+
+
+        <article class="method-card" data-category="memory">
+            <div class="method-category">Память</div>
+            <h2>Spaced Repetition</h2>
+            <p>
+                Повторение материала через увеличивающиеся
+                интервалы времени.
+            </p>
+
+            <div class="method-actions">
+                <button onclick="showMethod('spaced')">
+                    Подробнее
+                </button>
+                <button class="secondary" onclick="alert('Тренажёр повторений появится здесь')">
+                    Попробовать
+                </button>
+            </div>
+        </article>
+
+
+        <article class="method-card" data-category="exam">
+            <div class="method-category">Экзамены</div>
+            <h2>Practice Testing</h2>
+            <p>
+                Проверка себя вопросами и задачами
+                вместо пассивного чтения.
+            </p>
+
+            <div class="method-actions">
+                <button onclick="showMethod('testing')">
+                    Подробнее
+                </button>
+                <button class="secondary" onclick="alert('Мини-тест появится здесь')">
+                    Попробовать
+                </button>
+            </div>
+        </article>
+
+
+        <article class="method-card" data-category="memory">
+            <div class="method-category">Понимание</div>
+            <h2>Feynman Technique</h2>
+            <p>
+                Объяснение сложной идеи простыми словами,
+                чтобы обнаружить пробелы в понимании.
+            </p>
+
+            <div class="method-actions">
+                <button onclick="showMethod('feynman')">
+                    Подробнее
+                </button>
+            </div>
+        </article>
+
+
+        <article class="method-card" data-category="focus">
+            <div class="method-category">Концентрация</div>
+            <h2>Pomodoro</h2>
+            <p>
+                Работа короткими сфокусированными интервалами
+                с запланированными перерывами.
+            </p>
+
+            <div class="method-actions">
+                <button onclick="showMethod('pomodoro')">
+                    Подробнее
+                </button>
+                <button onclick="showPomodoro()" class="secondary">
+                    Запустить
+                </button>
+            </div>
+        </article>
+
+
+        <article class="method-card" data-category="planning">
+            <div class="method-category">Планирование</div>
+            <h2>Time Blocking</h2>
+            <p>
+                Закрепление конкретного времени
+                за конкретной задачей.
+            </p>
+
+            <div class="method-actions">
+                <button onclick="showMethod('blocking')">
+                    Подробнее
+                </button>
+            </div>
+        </article>
+
+
+        <article class="method-card" data-category="focus">
+            <div class="method-category">Концентрация</div>
+            <h2>Single Tasking</h2>
+            <p>
+                Выполнение одной задачи за раз
+                вместо постоянного переключения.
+            </p>
+
+            <div class="method-actions">
+                <button onclick="showMethod('single')">
+                    Подробнее
+                </button>
+            </div>
+        </article>
+
+
+        <article class="method-card" data-category="memory">
+            <div class="method-category">Понимание</div>
+            <h2>Elaboration</h2>
+            <p>
+                Связывание нового материала
+                с уже известными знаниями.
+            </p>
+
+            <div class="method-actions">
+                <button onclick="showMethod('elaboration')">
+                    Подробнее
+                </button>
+            </div>
+        </article>
+
+
+        <article class="method-card" data-category="memory">
+            <div class="method-category">Понимание</div>
+            <h2>Concept Mapping</h2>
+            <p>
+                Создание карты связей между понятиями,
+                причинами и последствиями.
+            </p>
+
+            <div class="method-actions">
+                <button onclick="showMethod('mapping')">
+                    Подробнее
+                </button>
+            </div>
+        </article>
+
+
+        <article class="method-card" data-category="exam">
+            <div class="method-category">Ошибки</div>
+            <h2>Error Log</h2>
+            <p>
+                Систематический разбор ошибок:
+                причина → исправление → стратегия.
+            </p>
+
+            <div class="method-actions">
+                <button onclick="showMethod('errors')">
+                    Подробнее
+                </button>
+            </div>
+        </article>
+
+
+        <article class="method-card" data-category="exam">
+            <div class="method-category">Экзамены</div>
+            <h2>Mock Exam</h2>
+            <p>
+                Пробный экзамен в условиях,
+                максимально похожих на настоящие.
+            </p>
+
+            <div class="method-actions">
+                <button onclick="showMethod('mock')">
+                    Подробнее
+                </button>
+            </div>
+        </article>
+
+
+        <article class="method-card" data-category="memory">
+            <div class="method-category">Понимание</div>
+            <h2>Self-Explanation</h2>
+            <p>
+                Проговаривание собственных рассуждений
+                во время решения задачи.
+            </p>
+
+            <div class="method-actions">
+                <button onclick="showMethod('self')">
+                    Подробнее
+                </button>
+            </div>
+        </article>
+
+    </section>
+
+
+    <section id="details" class="details">
+
+        <div class="details-top">
+            <div>
+                <div class="badge" id="detailCategory">
+                    METHOD
+                </div>
+
+                <h2 id="detailTitle">Методика</h2>
+
+                <p id="detailIntro"></p>
+            </div>
+
+            <button class="close-btn" onclick="closeDetails()">
+                Закрыть
+            </button>
+        </div>
+
+
+        <div class="details-grid">
+
+            <div class="detail-block">
+                <h3>Что это?</h3>
+                <p id="what"></p>
+            </div>
+
+            <div class="detail-block">
+                <h3>Почему это может работать?</h3>
+                <p id="why"></p>
+            </div>
+
+            <div class="detail-block">
+                <h3>Когда применять?</h3>
+                <p id="when"></p>
+            </div>
+
+            <div class="detail-block">
+                <h3>Когда не стоит?</h3>
+                <p id="notWhen"></p>
+            </div>
+
+            <div class="detail-block">
+                <h3>Как делать?</h3>
+                <ul id="steps"></ul>
+            </div>
+
+            <div class="detail-block">
+                <h3>Пример из школы</h3>
+                <p id="example"></p>
+            </div>
+
+            <div class="detail-block">
+                <h3>Типичные ошибки</h3>
+                <p id="mistakes"></p>
+            </div>
+
+        </div>
+
+
+        <div id="pomodoroBox" class="pomodoro" style="display:none;">
+
+            <h2>Focus Timer</h2>
+
+            <div class="timer-mode" id="timerMode">
+                Фокус
+            </div>
+
+            <div class="timer" id="timer">
+                25:00
+            </div>
+
+            <div class="timer-controls">
+
+                <button onclick="startTimer()">
+                    Старт
+                </button>
+
+                <button class="secondary" onclick="pauseTimer()">
+                    Пауза
+                </button>
+
+                <button class="secondary" onclick="resetTimer()">
+                    Сбросить
+                </button>
+
+            </div>
+
+            <div class="mode-buttons">
+
+                <button onclick="setTimer(25, 5)">
+                    25 / 5
+                </button>
+
+                <button onclick="setTimer(50, 10)">
+                    50 / 10
+                </button>
+
+                <button onclick="setTimer(90, 20)">
+                    90 / 20
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+const methods = {
+
+    recall: {
+        category: "Память",
+        title: "Active Recall",
+        intro: "Не смотри на ответ. Сначала попробуй достать информацию из памяти.",
+        what: "Active Recall — это практика активного воспроизведения информации без подсказки. Вместо того чтобы снова читать параграф, ты пытаешься самостоятельно ответить на вопрос.",
+        why: "Вспоминание требует от мозга восстановить информацию, а не просто узнать знакомый текст. Поэтому оно помогает заметить реальные пробелы в знаниях.",
+        when: "После изучения темы, перед контрольной, при повторении терминов, формул, дат и определений.",
+        notWhen: "Когда ты ещё вообще не познакомился с материалом. Сначала нужно получить базовое понимание.",
+        steps: [
+            "Закрой учебник или конспект.",
+            "Задай себе конкретный вопрос.",
+            "Ответь своими словами.",
+            "Проверь ответ.",
+            "Отметь, что не смог вспомнить.",
+            "Повтори именно слабое место."
+        ],
+        example: "После изучения фотосинтеза закрой учебник и ответь: «Где происходит световая фаза фотосинтеза и что в ней образуется?»",
+        mistakes: "Подглядывать слишком быстро, считать узнавание текста настоящим знанием и задавать слишком расплывчатые вопросы."
+    },
+
+    spaced: {
+        category: "Память",
+        title: "Spaced Repetition",
+        intro: "Повторяй материал не подряд, а с интервалами.",
+        what: "Spaced Repetition — распределение повторений во времени. Например: день 1 → день 2 → день 4 → день 7 → день 14.",
+        why: "Интервалы заставляют тебя снова извлекать информацию после некоторого забывания, а не просто узнавать её сразу после чтения.",
+        when: "Термины, определения, иностранные слова, формулы, даты и другой материал, который нужно помнить долго.",
+        notWhen: "Не нужно механически повторять всё по одной схеме. Сложность материала и качество твоих ответов должны влиять на интервал.",
+        steps: [
+            "Создай вопрос по материалу.",
+            "Проверь себя.",
+            "Если ответ лёгкий — увеличь интервал.",
+            "Если ошибся — повтори раньше.",
+            "Периодически проверяй старый материал."
+        ],
+        example: "Выучил 20 биологических терминов сегодня. Завтра проверяешь их без учебника, затем через несколько дней и снова через неделю.",
+        mistakes: "Повторять только чтением, использовать одинаковые интервалы для всех тем и никогда не проверять себя."
+    },
+
+    testing: {
+        category: "Экзамены",
+        title: "Practice Testing",
+        intro: "Проверка — это часть обучения, а не только финальная оценка.",
+        what: "Practice Testing — решение задач и ответы на вопросы до экзамена, желательно без подсказок.",
+        why: "Ты одновременно тренируешь извлечение информации и получаешь обратную связь о том, что реально знаешь.",
+        when: "Перед контрольными, экзаменами и после изучения отдельной темы.",
+        notWhen: "Не стоит начинать с огромного теста, если ты ещё вообще не понимаешь тему.",
+        steps: [
+            "Выбери изученную тему.",
+            "Убери конспект.",
+            "Реши задачи или ответь на вопросы.",
+            "Проверь ответы.",
+            "Разбери ошибки.",
+            "Повтори слабые места."
+        ],
+        example: "После изучения закона Ома реши 5 задач, не открывая формулы. После проверки разберись не только с неправильным ответом, но и с причиной ошибки.",
+        mistakes: "Смотреть решение сразу, запоминать ответы вместо принципа и не анализировать ошибки."
+    },
+
+    feynman: {
+        category: "Понимание",
+        title: "Feynman Technique",
+        intro: "Если не можешь объяснить просто — возможно, ты ещё не понял.",
+        what: "Метод предполагает объяснение идеи простыми словами, как будто ты рассказываешь её человеку, который не знаком с темой.",
+        why: "При объяснении становятся заметны места, где ты используешь термины, но не понимаешь механизм.",
+        when: "Сложные темы по физике, биологии, математике, истории и другим предметам.",
+        notWhen: "Не нужно упрощать настолько, чтобы потерять научную точность.",
+        steps: [
+            "Назови тему.",
+            "Объясни её простыми словами.",
+            "Отметь место, где остановился.",
+            "Вернись к источнику.",
+            "Уточни пробел.",
+            "Объясни снова."
+        ],
+        example: "Объясни, почему электрический ток возникает в цепи, не используя фразу «потому что есть напряжение».",
+        mistakes: "Заучивать красивый текст вместо понимания и заменять точные понятия неправильными упрощениями."
+    },
+
+    pomodoro: {
+        category: "Концентрация",
+        title: "Pomodoro",
+        intro: "Преврати большую задачу в один конкретный сфокусированный отрезок.",
+        what: "Pomodoro — работа определёнными интервалами с короткими перерывами. Классический вариант — 25 минут работы и 5 минут отдыха.",
+        why: "Ограниченный отрезок снижает ощущение огромной задачи и заставляет заранее определить, чем именно ты будешь заниматься.",
+        when: "Домашняя работа, повторение, решение задач, чтение, подготовка к экзамену.",
+        notWhen: "25 минут — не магическое число. Если ты глубоко работаешь и остановка разрушит концентрацию, необязательно прерываться только потому, что таймер закончился.",
+        steps: [
+            "Выбери одну конкретную задачу.",
+            "Убери очевидные отвлекающие факторы.",
+            "Запусти таймер.",
+            "Работай только над этой задачей.",
+            "Сделай перерыв.",
+            "После нескольких циклов сделай более длинный отдых."
+        ],
+        example: "Не «учить биологию», а «за 25 минут объяснить себе митохондрии и решить 5 вопросов по теме».",
+        mistakes: "Запускать таймер без конкретной задачи, превращать пятиминутный перерыв в 40 минут соцсетей и считать 25 минут обязательным максимумом концентрации."
+    },
+
+    blocking: {
+        category: "Планирование",
+        title: "Time Blocking",
+        intro: "Не просто записывай задачи — заранее назначай им время.",
+        what: "Time Blocking — разделение дня на временные блоки, каждый из которых имеет конкретное назначение.",
+        why: "Задача становится частью расписания, а не абстрактным пунктом в списке.",
+        when: "Когда много предметов, дедлайнов и параллельных задач.",
+        notWhen: "Не нужно планировать каждую минуту дня. Оставляй свободное время для непредвиденных дел.",
+        steps: [
+            "Посмотри обязательные дела.",
+            "Определи свободные интервалы.",
+            "Назначь задачам конкретное время.",
+            "Добавь буферы.",
+            "В конце дня проверь план."
+        ],
+        example: "16:00–16:40 — биология. 17:00–17:45 — математика. 18:00–18:25 — повторение английских слов.",
+        mistakes: "Заполнять 100% дня, ставить слишком много задач и не учитывать время на отдых."
+    },
+
+    single: {
+        category: "Концентрация",
+        title: "Single Tasking",
+        intro: "Одна задача. Один контекст. Один следующий шаг.",
+        what: "Single Tasking — сознательная работа над одной задачей вместо постоянного переключения между задачами.",
+        why: "Переключение внимания имеет стоимость: часть ресурсов уходит на возвращение к предыдущему контексту.",
+        when: "При решении сложных задач, чтении, написании текста и изучении новой темы.",
+        notWhen: "Не означает, что весь день нужно заниматься только одним предметом.",
+        steps: [
+            "Выбери одну задачу.",
+            "Закрой ненужные вкладки.",
+            "Убери телефон.",
+            "Определи результат.",
+            "Работай до завершения блока."
+        ],
+        example: "Вместо «математика + Telegram + YouTube + музыка с текстом» — 30 минут только решение задач.",
+        mistakes: "Считать многозадачностью обычные короткие переключения и постоянно проверять уведомления."
+    },
+
+    elaboration: {
+        category: "Понимание",
+        title: "Elaboration",
+        intro: "Связывай новую информацию с тем, что уже знаешь.",
+        what: "Elaboration — создание дополнительных связей и объяснений вокруг нового факта.",
+        why: "Чем больше осмысленных связей у знания, тем больше путей, через которые его можно восстановить.",
+        when: "При изучении новых понятий и процессов.",
+        notWhen: "Не нужно придумывать сложные связи ради самих связей.",
+        steps: [
+            "Назови новый факт.",
+            "Спроси «почему?» или «как это связано?»",
+            "Свяжи его с известным примером.",
+            "Объясни связь своими словами."
+        ],
+        example: "Изучая митохондрии, свяжи их функцию с потребностью мышечных клеток в энергии.",
+        mistakes: "Создавать случайные ассоциации и путать аналогию с научным объяснением."
+    },
+
+    mapping: {
+        category: "Понимание",
+        title: "Concept Mapping",
+        intro: "Покажи не только понятия, но и связи между ними.",
+        what: "Concept Map — визуальная схема, где понятия соединяются линиями и подписанными связями.",
+        why: "Она заставляет определить отношения между идеями, а не просто выписать список терминов.",
+        when: "Большие темы с множеством взаимосвязей.",
+        notWhen: "Для короткого списка из пяти несвязанных терминов карта может быть лишней.",
+        steps: [
+            "Запиши центральное понятие.",
+            "Добавь связанные идеи.",
+            "Соедини их.",
+            "Подпиши тип связи.",
+            "Проверь, нет ли противоречий."
+        ],
+        example: "Для темы «Экосистема» связать продуцентов, консументов, редуцентов, поток энергии и круговорот веществ.",
+        mistakes: "Превращать карту в красивую картинку без реальных связей."
+    },
+
+    errors: {
+        category: "Ошибки",
+        title: "Error Log",
+        intro: "Ошибка должна превращаться в информацию о том, что изменить.",
+        what: "Error Log — журнал ошибок, в котором фиксируется не только неправильный ответ, но и причина ошибки.",
+        why: "Одинаковая ошибка может повторяться, пока ты не понял механизм её возникновения.",
+        when: "После задач, тестов, контрольных и пробных экзаменов.",
+        notWhen: "Не нужно записывать каждую мелкую описку как отдельную большую проблему.",
+        steps: [
+            "Запиши ошибку.",
+            "Запиши правильный ответ.",
+            "Определи причину.",
+            "Объясни правильный способ.",
+            "Придумай, как заметить эту ошибку в будущем."
+        ],
+        example: "Физика: получил неправильный ответ из-за перевода сантиметров в метры. В журнале фиксируешь причину и правило проверки единиц.",
+        mistakes: "Просто переписывать правильное решение без анализа причины."
+    },
+
+    mock: {
+        category: "Экзамены",
+        title: "Mock Exam",
+        intro: "Пробный экзамен должен проверять готовность, а не просто давать чувство подготовки.",
+        what: "Mock Exam — полноценная имитация экзамена с ограничением времени и минимальным количеством подсказок.",
+        why: "Ты тренируешь не только знания, но и управление временем, вниманием и стрессом в условиях, похожих на реальные.",
+        when: "На позднем этапе подготовки, когда основные темы уже изучены.",
+        notWhen: "Не имеет смысла делать полноценный пробник каждый день с самого начала подготовки.",
+        steps: [
+            "Выбери подходящий вариант.",
+            "Создай реальные условия.",
+            "Работай без подсказок.",
+            "Соблюдай время.",
+            "Проверь работу.",
+            "Разбери ошибки."
+        ],
+        example: "За несколько дней до контрольной решить полный вариант за отведённое время, затем распределить ошибки по темам.",
+        mistakes: "Проверять ответы во время решения и считать сам результат важнее анализа ошибок."
+    },
+
+    self: {
+        category: "Понимание",
+        title: "Self-Explanation",
+        intro: "Проговаривай собственные шаги рассуждения.",
+        what: "Self-Explanation — объяснение самому себе, почему каждый следующий шаг решения имеет смысл.",
+        why: "Это помогает обнаружить скачки в логике и скрытые предположения.",
+        when: "При решении задач и изучении процессов.",
+        notWhen: "Не обязательно проговаривать абсолютно каждую очевидную операцию.",
+        steps: [
+            "Назови, что известно.",
+            "Назови, что нужно найти.",
+            "Объясни следующий шаг.",
+            "Проверь, почему он допустим.",
+            "Продолжи решение."
+        ],
+        example: "При решении физической задачи объясняй не только формулу, но и почему именно эту формулу можно применить.",
+        mistakes: "Механически проговаривать действия, не проверяя их смысл."
+    }
+
+};
+
+
+function showMethod(id) {
+
+    const method = methods[id];
+
+    document.getElementById("details").classList.add("visible");
+
+    document.getElementById("detailCategory").textContent = method.category;
+    document.getElementById("detailTitle").textContent = method.title;
+    document.getElementById("detailIntro").textContent = method.intro;
+
+    document.getElementById("what").textContent = method.what;
+    document.getElementById("why").textContent = method.why;
+    document.getElementById("when").textContent = method.when;
+    document.getElementById("notWhen").textContent = method.notWhen;
+    document.getElementById("example").textContent = method.example;
+    document.getElementById("mistakes").textContent = method.mistakes;
+
+    const steps = document.getElementById("steps");
+
+    steps.innerHTML = "";
+
+    method.steps.forEach(step => {
+        const li = document.createElement("li");
+        li.textContent = step;
+        steps.appendChild(li);
+    });
+
+    document.getElementById("pomodoroBox").style.display =
+        id === "pomodoro" ? "block" : "none";
+
+    document.getElementById("details").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
+
+
+function closeDetails() {
+    document.getElementById("details").classList.remove("visible");
+}
+
+
+function showPomodoro() {
+    showMethod("pomodoro");
+}
+
+
+function filterMethods(category, button) {
+
+    document.querySelectorAll(".filter").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    document.querySelectorAll(".method-card").forEach(card => {
+
+        if (category === "all" || card.dataset.category === category) {
+            card.style.display = "flex";
+        } else {
+            card.style.display = "none";
+        }
+
+    });
+}
+
+
+/* POMODORO */
+
+let workMinutes = 25;
+let breakMinutes = 5;
+
+let secondsLeft = workMinutes * 60;
+let timerInterval = null;
+let isRunning = false;
+let isWorkMode = true;
+
+
+function updateTimer() {
+
+    const minutes = Math.floor(secondsLeft / 60);
+    const seconds = secondsLeft % 60;
+
+    document.getElementById("timer").textContent =
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0");
+}
+
+
+function startTimer() {
+
+    if (isRunning) return;
+
+    isRunning = true;
+
+    timerInterval = setInterval(() => {
+
+        secondsLeft--;
+
+        updateTimer();
+
+        if (secondsLeft <= 0) {
+
+            clearInterval(timerInterval);
+
+            isRunning = false;
+
+            if (isWorkMode) {
+
+                isWorkMode = false;
+                secondsLeft = breakMinutes * 60;
+
+                document.getElementById("timerMode").textContent =
+                    "Перерыв";
+
+                alert("Фокус завершён. Время сделать перерыв.");
+
+            } else {
+
+                isWorkMode = true;
+                secondsLeft = workMinutes * 60;
+
+                document.getElementById("timerMode").textContent =
+                    "Фокус";
+
+                alert("Перерыв завершён. Можно возвращаться к работе.");
+            }
+
+            updateTimer();
+        }
+
+    }, 1000);
+}
+
+
+function pauseTimer() {
+
+    clearInterval(timerInterval);
+
+    isRunning = false;
+}
+
+
+function resetTimer() {
+
+    clearInterval(timerInterval);
+
+    isRunning = false;
+    isWorkMode = true;
+
+    secondsLeft = workMinutes * 60;
+
+    document.getElementById("timerMode").textContent =
+        "Фокус";
+
+    updateTimer();
+}
+
+
+function setTimer(work, breakTime) {
+
+    workMinutes = work;
+    breakMinutes = breakTime;
+
+    resetTimer();
+}
+
+
+updateTimer();
+
+</script>
+
+</body>
+</html>

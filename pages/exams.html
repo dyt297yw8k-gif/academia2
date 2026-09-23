@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Экзамены — ACADEMIA</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        .page-intro {
+            max-width: 760px;
+            margin-bottom: 45px;
+        }
+
+        .page-intro h1 {
+            font-size: clamp(44px, 7vw, 76px);
+            line-height: .95;
+            letter-spacing: -4px;
+            margin-bottom: 20px;
+        }
+
+        .page-intro p {
+            color: #6b7280;
+            font-size: 19px;
+            line-height: 1.6;
+        }
+
+        .exam-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 28px;
+        }
+
+        .panel h2 {
+            font-size: 25px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px 14px;
+            margin-bottom: 18px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 15px;
+            background: white;
+        }
+
+        .topic-input {
+            display: flex;
+            gap: 8px;
+        }
+
+        .topic-input input {
+            flex: 1;
+        }
+
+        .topic-input button {
+            width: 48px;
+            height: 46px;
+            padding: 0;
+            font-size: 24px;
+        }
+
+        .topic {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f3f4f6;
+            padding: 11px 14px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .remove-topic {
+            border: none;
+            background: none;
+            color: #9ca3af;
+            padding: 0;
+            font-size: 20px;
+        }
+
+        .generate {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .empty {
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+
+        .plan-item {
+            border-left: 3px solid #2563eb;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            padding: 17px;
+            margin-bottom: 12px;
+        }
+
+        .plan-item strong {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .plan-item span {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .tag {
+            display: inline-block;
+            color: #2563eb;
+            background: #e8efff;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 5px 8px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .saved {
+            display: none;
+            color: #16a34a;
+            font-size: 13px;
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        .full {
+            margin-top: 20px;
+        }
+
+        .full h2 {
+            margin-bottom: 20px;
+        }
+
+        .logic {
+            display: grid;
+            gap: 10px;
+        }
+
+        .logic div {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .logic strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .logic span {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 800px) {
+            .exam-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <a href="../index.html" class="logo">
+        ACADEMIA<span>.</span>
+    </a>
+
+    <nav>
+        <a href="diagnostic.html">Диагностика</a>
+        <a href="methods.html">Методики</a>
+        <a href="exams.html">Экзамены</a>
+        <a href="planner.html">Планировщик</a>
+        <a href="pages/focus.html">Концентрация</a>
+        <a href="progress.html">Прогресс</a>
+    </nav>
+
+</header>
+
+
+<main>
+
+    <section class="page-intro">
+
+        <div class="badge">
+            EXAM SYSTEM
+        </div>
+
+        <h1>
+            Подготовка<br>
+            к экзамену.
+        </h1>
+
+        <p>
+            Создай подготовку, разбей материал на темы
+            и преврати большой экзамен в понятную систему действий.
+        </p>
+
+    </section>
+
+
+    <section class="exam-grid">
+
+
+        <!-- СОЗДАНИЕ ПЛАНА -->
+
+        <div class="panel">
+
+            <h2>
+                Новый экзамен
+            </h2>
+
+            <label for="subject">
+                Предмет
+            </label>
+
+            <input
+                id="subject"
+                type="text"
+                placeholder="Например: Биология"
+            >
+
+
+            <label for="examDate">
+                Дата экзамена
+            </label>
+
+            <input
+                id="examDate"
+                type="date"
+            >
+
+
+            <label for="studyTime">
+                Время на подготовку в день
+            </label>
+
+            <select id="studyTime">
+
+                <option value="30">
+                    30 минут
+                </option>
+
+                <option value="60" selected>
+                    1 час
+                </option>
+
+                <option value="90">
+                    1,5 часа
+                </option>
+
+                <option value="120">
+                    2 часа
+                </option>
+
+                <option value="180">
+                    3 часа
+                </option>
+
+            </select>
+
+
+            <label>
+                Темы экзамена
+            </label>
+
+
+            <div class="topic-input">
+
+                <input
+                    id="topicInput"
+                    type="text"
+                    placeholder="Например: Генетика"
+                >
+
+                <button
+                    type="button"
+                    onclick="addTopic()"
+                >
+                    +
+                </button>
+
+            </div>
+
+
+            <div id="topicList"></div>
+
+
+            <button
+                type="button"
+                class="generate"
+                onclick="generatePlan()"
+            >
+                Создать план
+            </button>
+
+
+            <div
+                id="savedMessage"
+                class="saved"
+            >
+                ✓ План сохранён
+            </div>
+
+        </div>
+
+
+
+        <!-- СИСТЕМА -->
+
+        <div class="panel">
+
+            <h2>
+                Как готовиться
+            </h2>
+
+
+            <div class="logic">
+
+                <div>
+                    <div class="tag">
+                        01 · ДИАГНОСТИКА
+                    </div>
+
+                    <strong>
+                        Определи уровень
+                    </strong>
+
+                    <span>
+                        Что ты уже знаешь, а где есть пробелы?
+                    </span>
+                </div>
+
+
+                <div>
+                    <div class="tag">
+                        02 · ИЗУЧЕНИЕ
+                    </div>
+
+                    <strong>
+                        Разбери слабые темы
+                    </strong>
+
+                    <span>
+                        Пойми материал, а не просто перечитай его.
+                    </span>
+                </div>
+
+
+                <div>
+                    <div class="tag">
+                        03 · ПРАКТИКА
+                    </div>
+
+                    <strong>
+                        Решай без подсказок
+                    </strong>
+
+                    <span>
+                        Используй Active Recall и Practice Testing.
+                    </span>
+                </div>
+
+
+                <div>
+                    <div class="tag">
+                        04 · ОШИБКИ
+                    </div>
+
+                    <strong>
+                        Разбери ошибки
+                    </strong>
+
+                    <span>
+                        Найди причину ошибки и способ не повторить её.
+                    </span>
+                </div>
+
+
+                <div>
+                    <div class="tag">
+                        05 · MOCK EXAM
+                    </div>
+
+                    <strong>
+                        Проверь готовность
+                    </strong>
+
+                    <span>
+                        Выполни пробный вариант в ограниченное время.
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- РЕЗУЛЬТАТ -->
+
+    <section class="panel full">
+
+        <h2>
+            Твой план
+        </h2>
+
+        <div id="plan">
+
+            <p class="empty">
+                Здесь появится персональный план после заполнения формы.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<script>
+
+let topics = [];
+
+
+
+function addTopic() {
+
+    const input = document.getElementById("topicInput");
+
+    const topic = input.value.trim();
+
+
+    if (topic === "") {
+        return;
+    }
+
+
+    topics.push(topic);
+
+    input.value = "";
+
+    renderTopics();
+
+    input.focus();
+}
+
+
+
+function removeTopic(index) {
+
+    topics.splice(index, 1);
+
+    renderTopics();
+}
+
+
+
+function renderTopics() {
+
+    const list = document.getElementById("topicList");
+
+    list.innerHTML = "";
+
+
+    for (let i = 0; i < topics.length; i++) {
+
+        const item = document.createElement("div");
+
+        item.className = "topic";
+
+
+        const name = document.createElement("span");
+
+        name.textContent = topics[i];
+
+
+        const remove = document.createElement("button");
+
+        remove.className = "remove-topic";
+
+        remove.textContent = "×";
+
+        remove.type = "button";
+
+        remove.onclick = function() {
+            removeTopic(i);
+        };
+
+
+        item.appendChild(name);
+
+        item.appendChild(remove);
+
+        list.appendChild(item);
+    }
+}
+
+
+
+function generatePlan() {
+
+    const subject =
+        document.getElementById("subject").value.trim();
+
+    const date =
+        document.getElementById("examDate").value;
+
+    const time =
+        document.getElementById("studyTime").value;
+
+    const plan =
+        document.getElementById("plan");
+
+
+    /* ПРОВЕРКИ */
+
+    if (subject === "") {
+
+        plan.innerHTML =
+            "<p class='empty'>Сначала введи предмет.</p>";
+
+        return;
+    }
+
+
+    if (date === "") {
+
+        plan.innerHTML =
+            "<p class='empty'>Выбери дату экзамена.</p>";
+
+        return;
+    }
+
+
+    if (topics.length === 0) {
+
+        plan.innerHTML =
+            "<p class='empty'>Добавь хотя бы одну тему.</p>";
+
+        return;
+    }
+
+
+
+    /* ДНИ ДО ЭКЗАМЕНА */
+
+    const today = new Date();
+
+    today.setHours(0, 0, 0, 0);
+
+
+    const exam = new Date(date + "T00:00:00");
+
+
+    let days =
+        Math.ceil(
+            (exam - today) /
+            (1000 * 60 * 60 * 24)
+        );
+
+
+    if (days < 1) {
+        days = 1;
+    }
+
+
+
+    /* СОЗДАЁМ ПЛАН */
+
+    let html = "";
+
+
+    html += `
+        <div class="plan-item">
+
+            <div class="tag">
+                ЭКЗАМЕН
+            </div>
+
+            <strong>
+                ${subject}
+            </strong>
+
+            <span>
+                До экзамена: ${days} дн.
+                · ${time} минут в день
+                · ${topics.length} тем
+            </span>
+
+        </div>
+    `;
+
+
+
+    topics.forEach(function(topic, index) {
+
+        html += `
+            <div class="plan-item">
+
+                <div class="tag">
+                    ЭТАП ${index + 1}
+                </div>
+
+                <strong>
+                    ${topic}
+                </strong>
+
+                <span>
+                    Изучить тему →
+                    закрыть учебник →
+                    вспомнить материал →
+                    решить задачи →
+                    разобрать ошибки.
+                </span>
+
+            </div>
+        `;
+
+    });
+
+
+
+    html += `
+        <div class="plan-item">
+
+            <div class="tag">
+                ФИНАЛ
+            </div>
+
+            <strong>
+                Пробный экзамен
+            </strong>
+
+            <span>
+                Полный вариант без подсказок.
+                После него — обязательный разбор ошибок.
+            </span>
+
+        </div>
+    `;
+
+
+    plan.innerHTML = html;
+
+
+
+    /* СОХРАНЯЕМ */
+
+    const data = {
+
+        subject: subject,
+
+        date: date,
+
+        time: time,
+
+        topics: topics
+
+    };
+
+
+    localStorage.setItem(
+        "academiaExamPlan",
+        JSON.stringify(data)
+    );
+
+
+    document.getElementById("savedMessage")
+        .style.display = "block";
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Планировщик — ACADEMIA</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        .page-intro {
+            max-width: 750px;
+            margin-bottom: 40px;
+        }
+
+        .page-intro h1 {
+            font-size: clamp(44px, 7vw, 76px);
+            line-height: .95;
+            letter-spacing: -4px;
+            margin-bottom: 20px;
+        }
+
+        .page-intro p {
+            color: #6b7280;
+            font-size: 19px;
+            line-height: 1.6;
+        }
+
+        .planner-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 28px;
+        }
+
+        .panel h2 {
+            font-size: 24px;
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            margin-bottom: 17px;
+            font-size: 15px;
+            background: white;
+        }
+
+        .add-button {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .task {
+            display: grid;
+            grid-template-columns: 24px 1fr auto;
+            gap: 13px;
+            align-items: start;
+            padding: 17px;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            transition: .2s;
+        }
+
+        .task.completed {
+            opacity: .55;
+        }
+
+        .task.completed .task-title {
+            text-decoration: line-through;
+        }
+
+        .task-check {
+            width: 19px;
+            height: 19px;
+            margin: 3px 0 0;
+            accent-color: #2563eb;
+        }
+
+        .task-title {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .task-info {
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .priority {
+            font-size: 11px;
+            font-weight: 800;
+            padding: 5px 8px;
+            border-radius: 6px;
+            background: #e8efff;
+            color: #2563eb;
+            white-space: nowrap;
+        }
+
+        .delete {
+            background: #f3f4f6;
+            color: #6b7280;
+            padding: 7px 9px;
+            font-size: 13px;
+            margin-top: 7px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            flex: 1;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 25px;
+            margin-bottom: 4px;
+        }
+
+        .stat span {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .empty {
+            color: #9ca3af;
+            line-height: 1.5;
+            padding: 20px 0;
+        }
+
+        .clear {
+            background: white;
+            color: #6b7280;
+            border: 1px solid #d1d5db;
+            font-size: 13px;
+            padding: 9px 13px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 850px) {
+            .planner-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .stats {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <a href="../index.html" class="logo">
+        ACADEMIA<span>.</span>
+    </a>
+
+    <nav>
+        <a href="diagnostic.html">Диагностика</a>
+        <a href="methods.html">Методики</a>
+        <a href="exams.html">Экзамены</a>
+        <a href="planner.html">Планировщик</a>
+        <a href="pages/focus.html">Концентрация</a>
+        <a href="progress.html">Прогресс</a>
+    </nav>
+
+</header>
+
+
+<main>
+
+    <section class="page-intro">
+
+        <div class="badge">
+            PLANNER
+        </div>
+
+        <h1>
+            Что нужно<br>
+            сделать?
+        </h1>
+
+        <p>
+            Не составляй огромный список.
+            Определи конкретное действие, время и способ работы.
+        </p>
+
+    </section>
+
+
+    <div class="planner-grid">
+
+
+        <!-- ДОБАВЛЕНИЕ -->
+
+        <section class="panel">
+
+            <h2>
+                Новая задача
+            </h2>
+
+            <label>
+                Что нужно сделать?
+            </label>
+
+            <input
+                id="taskInput"
+                type="text"
+                placeholder="Например: решить 10 задач по физике"
+            >
+
+
+            <label>
+                Предмет
+            </label>
+
+            <input
+                id="subjectInput"
+                type="text"
+                placeholder="Физика"
+            >
+
+
+            <label>
+                Метод
+            </label>
+
+            <select id="methodInput">
+
+                <option>
+                    Practice Testing
+                </option>
+
+                <option>
+                    Active Recall
+                </option>
+
+                <option>
+                    Feynman Technique
+                </option>
+
+                <option>
+                    Pomodoro
+                </option>
+
+                <option>
+                    Error Log
+                </option>
+
+                <option>
+                    Spaced Repetition
+                </option>
+
+                <option>
+                    Обычная работа
+                </option>
+
+            </select>
+
+
+            <label>
+                Время
+            </label>
+
+            <select id="durationInput">
+
+                <option value="15">
+                    15 минут
+                </option>
+
+                <option value="25" selected>
+                    25 минут
+                </option>
+
+                <option value="40">
+                    40 минут
+                </option>
+
+                <option value="50">
+                    50 минут
+                </option>
+
+                <option value="60">
+                    1 час
+                </option>
+
+                <option value="90">
+                    1,5 часа
+                </option>
+
+            </select>
+
+
+            <label>
+                Приоритет
+            </label>
+
+            <select id="priorityInput">
+
+                <option value="Высокий">
+                    Высокий
+                </option>
+
+                <option value="Средний" selected>
+                    Средний
+                </option>
+
+                <option value="Низкий">
+                    Низкий
+                </option>
+
+            </select>
+
+
+            <button
+                class="add-button"
+                onclick="addTask()"
+            >
+                Добавить задачу
+            </button>
+
+        </section>
+
+
+
+        <!-- ЗАДАЧИ -->
+
+        <section class="panel">
+
+            <div class="stats">
+
+                <div class="stat">
+                    <strong id="totalCount">0</strong>
+                    <span>Всего</span>
+                </div>
+
+                <div class="stat">
+                    <strong id="doneCount">0</strong>
+                    <span>Выполнено</span>
+                </div>
+
+                <div class="stat">
+                    <strong id="timeCount">0</strong>
+                    <span>Минут</span>
+                </div>
+
+            </div>
+
+
+            <h2>
+                Сегодня
+            </h2>
+
+
+            <div id="taskList">
+
+                <p class="empty">
+                    Пока задач нет.
+                    Добавь первую задачу слева.
+                </p>
+
+            </div>
+
+
+            <button
+                class="clear"
+                onclick="clearCompleted()"
+            >
+                Удалить выполненные
+            </button>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+
+<script>
+
+let tasks = JSON.parse(
+    localStorage.getItem("academiaTasks") || "[]"
+);
+
+
+
+function saveTasks() {
+
+    localStorage.setItem(
+        "academiaTasks",
+        JSON.stringify(tasks)
+    );
+
+}
+
+
+
+function addTask() {
+
+    const title =
+        document.getElementById("taskInput")
+        .value
+        .trim();
+
+    const subject =
+        document.getElementById("subjectInput")
+        .value
+        .trim();
+
+    const method =
+        document.getElementById("methodInput")
+        .value;
+
+    const duration =
+        Number(
+            document.getElementById("durationInput")
+            .value
+        );
+
+    const priority =
+        document.getElementById("priorityInput")
+        .value;
+
+
+    if (title === "") {
+
+        alert("Напиши, что нужно сделать.");
+
+        return;
+    }
+
+
+    const task = {
+
+        id: Date.now(),
+
+        title: title,
+
+        subject:
+            subject || "Без предмета",
+
+        method: method,
+
+        duration: duration,
+
+        priority: priority,
+
+        completed: false
+
+    };
+
+
+    tasks.push(task);
+
+    saveTasks();
+
+    renderTasks();
+
+
+    document.getElementById("taskInput")
+        .value = "";
+
+}
+
+
+
+function toggleTask(id) {
+
+    tasks = tasks.map(function(task) {
+
+        if (task.id === id) {
+
+            return {
+                ...task,
+                completed: !task.completed
+            };
+
+        }
+
+        return task;
+
+    });
+
+
+    saveTasks();
+
+    renderTasks();
+
+}
+
+
+
+function deleteTask(id) {
+
+    tasks =
+        tasks.filter(function(task) {
+            return task.id !== id;
+        });
+
+
+    saveTasks();
+
+    renderTasks();
+
+}
+
+
+
+function clearCompleted() {
+
+    tasks =
+        tasks.filter(function(task) {
+            return !task.completed;
+        });
+
+
+    saveTasks();
+
+    renderTasks();
+
+}
+
+
+
+function renderTasks() {
+
+    const list =
+        document.getElementById("taskList");
+
+    const total =
+        tasks.length;
+
+    const done =
+        tasks.filter(function(task) {
+            return task.completed;
+        }).length;
+
+    const minutes =
+        tasks.reduce(function(sum, task) {
+            return sum + task.duration;
+        }, 0);
+
+
+    document.getElementById("totalCount")
+        .textContent = total;
+
+    document.getElementById("doneCount")
+        .textContent = done;
+
+    document.getElementById("timeCount")
+        .textContent = minutes;
+
+
+    if (tasks.length === 0) {
+
+        list.innerHTML =
+            "<p class='empty'>Пока задач нет. Добавь первую задачу слева.</p>";
+
+        return;
+    }
+
+
+    list.innerHTML = "";
+
+
+    tasks.forEach(function(task) {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "task" +
+            (task.completed ? " completed" : "");
+
+
+        item.innerHTML = `
+
+            <input
+                class="task-check"
+                type="checkbox"
+                ${task.completed ? "checked" : ""}
+            >
+
+            <div>
+
+                <div class="task-title">
+                    ${escapeHTML(task.title)}
+                </div>
+
+                <div class="task-info">
+                    ${escapeHTML(task.subject)}
+                    · ${escapeHTML(task.method)}
+                    · ${task.duration} мин.
+                </div>
+
+            </div>
+
+            <div>
+
+                <div class="priority">
+                    ${escapeHTML(task.priority)}
+                </div>
+
+                <button
+                    class="delete"
+                    type="button"
+                >
+                    Удалить
+                </button>
+
+            </div>
+        `;
+
+
+        item.querySelector(".task-check")
+            .addEventListener(
+                "change",
+                function() {
+                    toggleTask(task.id);
+                }
+            );
+
+
+        item.querySelector(".delete")
+            .addEventListener(
+                "click",
+                function() {
+                    deleteTask(task.id);
+                }
+            );
+
+
+        list.appendChild(item);
+
+    });
+
+}
+
+
+
+function escapeHTML(text) {
+
+    return text
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+
+renderTasks();
+
+</script>
+
+</body>
+</html>
